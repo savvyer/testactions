@@ -1,0 +1,12 @@
+name: 'Prod Release'
+description: 'Update repo version and log a list of PRs deployed in this build'
+inputs:
+  repo-token: # github token
+    description: 'Github Repo token'
+    required: true
+  target-commit-sha:
+    description: 'Target commit SHA for this deploy'
+    required: true
+runs:
+  using: 'node12'
+  main: './index.js'

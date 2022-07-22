@@ -1,0 +1,24 @@
+name: Release Bot
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit-sha:
+        description: 'Target commit SHA'
+        required: true
+        default: 'master'
+
+jobs:
+  prod_release_job:
+    runs-on: ubuntu-latest
+    name: Create new release on prod deploy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Create new release
+        uses: ./.github/actions/releases # Uses an action in the root directory
+        id: release-list
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          target-commit-sha: ${{ github.event.inputs.commit-sha }}
