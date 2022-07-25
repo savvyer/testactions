@@ -9,7 +9,7 @@ inputs:
 runs:
   using: 'composite'
   steps:      
-    - run: hub release create -m "${INPUT_TITLE}" "$(date +%Y%m%d%H%M%S)"
+    - run: hub release create -m "$(date +%Y%m%d.%H%M%S)" ${INPUT_CHANGELOG}
       shell: bash
       env:
-        INPUT_TITLE: ${{ inputs.title }}
+        CHANGELOG: ${{ inputs.changelog }}
