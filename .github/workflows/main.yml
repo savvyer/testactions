@@ -8,7 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Create a Release
-      uses: ./.github/actions/release
+      uses: ./.github/actions/releases
       env:
         GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
       with:
