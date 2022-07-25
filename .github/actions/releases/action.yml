@@ -1,12 +1,15 @@
-name: 'Prod Release'
-description: 'Update repo version and log a list of PRs deployed in this build'
+name: "Github Release"
+description: "Publish Github releases from an action"
+
 inputs:
-  repo-token: # github token
-    description: 'Github Repo token'
+  title:
+    description: "The name of the release to publish"
     required: true
-  target-commit-sha:
-    description: 'Target commit SHA for this deploy'
-    required: true
+
 runs:
-  using: 'node12'
-  main: './dist/index.js'
+  using: 'composite'
+  steps:      
+    - run: hub release create -m "${INPUT_TITLE}" "$(date +%Y%m%d%H%M%S)"
+      shell: bash
+      env:
+        INPUT_TITLE: ${{ inputs.title }}
