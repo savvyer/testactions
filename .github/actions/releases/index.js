@@ -131,12 +131,12 @@ async function run() {
     const owner = payload.repository.owner.login;
     const repo = payload.repository.name;
 
-    const githubToken = core.getInput("repo-token");
+    const githubToken = core.getInput("GITHUB_TOKEN");
     const octokit = github.getOctokit(githubToken);
-
+console.log("GITHUB_TOKEN", githubToken);
     const lastRelease = await getLastReleaseData(octokit, owner, repo);
-    const newReleaseSHA = core.getInput("target-commit-sha");
-
+    const newReleaseSHA = core.getInput("TARGET_COMMIT_SHA");
+console.log("TARGET_COMMIT_SHA", newReleaseSHA);
     const releasedPRs = await getMergedPRs(
       octokit,
       owner,

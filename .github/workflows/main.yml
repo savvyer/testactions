@@ -6,16 +6,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Build Changelog
-      id: build_changelog
-      uses: mikepenz/release-changelog-builder-action@v3
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Checkout
+      uses: actions/checkout@v2
     - name: Create a Release
       uses: ./.github/actions/releases
-      env:
-        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
       with:
-        changelog: ${{steps.build_changelog.outputs.changelog}}
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        TARGET_COMMIT_SHA: ${{ github.event.client_payload.TARGET_COMMIT_SHA }}
 

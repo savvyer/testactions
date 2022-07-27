@@ -2,14 +2,13 @@ name: "Github Release"
 description: "Publish Github releases from an action"
 
 inputs:
-  title:
-    description: "The name of the release to publish"
+  GITHUB_TOKEN:
+    description: 'Github token'
+    required: true
+  TARGET_COMMIT_SHA:
+    description: 'Target commit SHA for this deploy'
     required: true
 
 runs:
-  using: 'composite'
-  steps:      
-    - run: hub release create -m "$(date +%Y%m%d.%H%M%S)" ${INPUT_CHANGELOG}
-      shell: bash
-      env:
-        CHANGELOG: ${{ inputs.changelog }}
+  using: 'node14'
+  main: 'dist/index.js'
