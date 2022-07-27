@@ -76,7 +76,6 @@ const getMergedPRs = async (
 ) => {
   let mergedPRs = [];
 
-  console.log(newReleaseSHA);
   const finalCommitInNewRelease = await octokit.rest.repos.getCommit({
     owner,
     repo,
@@ -86,12 +85,14 @@ const getMergedPRs = async (
   const lastReleaseTime = lastRelease.created_at;
   const newReleaseTime = finalCommitInNewRelease.data.commit.committer.date;
 
+  const q = `repo:${owner}/${repo} merged:${lastReleaseTime}..${newReleaseTime} base:master`;
   const prSearchResults = await octokit.rest.search.issuesAndPullRequests({
-    q: `repo:${owner}/${repo} merged:${lastReleaseTime}..${newReleaseTime} base:master`,
+    q,
   });
 
   mergedPRs = prSearchResults.data.items;
-console.log('mergedPRs', mergedPRs);
+console.log('q', q);
+console.log('prSearchResults', prSearchResults);
   return mergedPRs;
 };
 
@@ -133,10 +134,10 @@ async function run() {
 
     const githubToken = core.getInput("GITHUB_TOKEN");
     const octokit = github.getOctokit(githubToken);
-console.log("GITHUB_TOKEN", githubToken);
+
     const lastRelease = await getLastReleaseData(octokit, owner, repo);
     const newReleaseSHA = core.getInput("TARGET_COMMIT_SHA");
-console.log("TARGET_COMMIT_SHA", newReleaseSHA);
+
     const releasedPRs = await getMergedPRs(
       octokit,
       owner,
