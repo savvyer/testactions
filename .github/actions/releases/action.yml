@@ -2,8 +2,8 @@ name: "Github Release"
 description: "Publish Github releases from an action"
 
 inputs:
-  GITHUB_TOKEN:
-    description: 'Github token'
+  RELEASE_TOKEN:
+    description: 'Github token for release creation'
     required: true
   TARGET_COMMIT_SHA:
     description: 'Target commit SHA for this deploy'

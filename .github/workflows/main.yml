@@ -11,6 +11,6 @@ jobs:
     - name: Create a Release
       uses: ./.github/actions/releases
       with:
-        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         TARGET_COMMIT_SHA: ${{ github.event.client_payload.TARGET_COMMIT_SHA }}
 

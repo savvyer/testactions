@@ -9132,7 +9132,7 @@ async function run() {
     const owner = payload.repository.owner.login;
     const repo = payload.repository.name;
 
-    const githubToken = core.getInput("GITHUB_TOKEN");
+    const githubToken = core.getInput("RELEASE_TOKEN");
     const octokit = github.getOctokit(githubToken);
 
     const lastRelease = await getLastReleaseData(octokit, owner, repo);
