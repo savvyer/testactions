@@ -9040,7 +9040,7 @@ const getNewVersionNumber = (lastVersionNumber) => {
   const shouldResetBuild = lastDateStamp !== newDateStamp;
   const newBuildNumber = getNewBuildNumber(shouldResetBuild, lastBuildNumber);
 
-  const newVersion = `${newDateStamp}.${newBuildNumber}`;
+  const newVersion = `v${newDateStamp}.${newBuildNumber}`;
   return newVersion;
 };
 
