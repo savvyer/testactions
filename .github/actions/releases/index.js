@@ -64,6 +64,7 @@ const createNewRelease = async (
     name: `v${newVersion}`,
     tag_name: newVersion,
     body: newReleaseDescription,
+    generate_release_notes: true,
   });
 };
 
