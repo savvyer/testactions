@@ -9091,13 +9091,9 @@ const getMergedPRs = async (
   const newReleaseTime = finalCommitInNewRelease.data.commit.committer.date;
 
   const q = `repo:${owner}/${repo} merged:${lastReleaseTime}..${newReleaseTime} base:main`;
-  const prSearchResults = await octokit.rest.search.issuesAndPullRequests({
-    q,
-  });
+  const prSearchResults = await octokit.rest.search.issuesAndPullRequests({ q });
 
   mergedPRs = prSearchResults.data.items;
-console.log('q', q);
-console.log('prSearchResults', prSearchResults);
   return mergedPRs;
 };
 
@@ -9126,7 +9122,6 @@ const getReleaseSummary = (mergedPRs) => {
 
   summaryOfReleasedPRs = mergedPRList.join("\n\n");
 
-  console.log(header + summaryOfReleasedPRs);
   return header + summaryOfReleasedPRs;
 };
 
