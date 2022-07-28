@@ -47,6 +47,7 @@ const getLastReleaseData = async (octokit, owner, repo) => {
     repo,
   });
   lastReleaseData = lastRelease.data;
+  console.log('lastReleaseData', lastReleaseData);
   return lastReleaseData;
 };
 
