@@ -30,7 +30,7 @@ const getNewBuildNumber = (shouldResetBuild, lastBuildNumber) => {
  *     Version: 2103.0005
  */
 const getNewVersionNumber = (lastVersionNumber) => {
-  const [lastDateStamp, lastBuildNumber] = lastVersionNumber.split(".");
+  const [lastDateStamp, lastBuildNumber] = lastVersionNumber.slice(1).split(".");
   const newDateStamp = getNewDateStamp();
 
   const shouldResetBuild = lastDateStamp !== newDateStamp;
