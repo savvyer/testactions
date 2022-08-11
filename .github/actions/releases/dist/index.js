@@ -9157,6 +9157,8 @@ async function run() {
       newReleaseDescription,
       newReleaseSHA
     );
+
+    core.setOutput('CHANGELOG_MESSAGE', newReleaseDescription);
   } catch (error) {
     core.setFailed(error.message);
   }

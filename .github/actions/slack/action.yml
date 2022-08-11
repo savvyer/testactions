@@ -1,0 +1,12 @@
+name: 'Slack Notification'
+description: 'Send slack notification about the new release'
+inputs:
+  SLACK_WEBHOOK:
+    description: 'Slack webhook'
+    required: true
+  CHANGELOG_MESSAGE:
+    description: 'Changelog message'
+    required: true
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
