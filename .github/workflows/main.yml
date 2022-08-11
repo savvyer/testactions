@@ -15,8 +15,8 @@ jobs:
         RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         TARGET_COMMIT_SHA: ${{ github.event.client_payload.TARGET_COMMIT_SHA }}
     - name: Slack notification
-        uses: ./.github/actions/slack
-        id: slack
-        with:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          CHANGELOG_MESSAGE: ${{ steps.releases.outputs.CHANGELOG_MESSAGE }}
+      uses: ./.github/actions/slack
+      id: slack
+      with:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        CHANGELOG_MESSAGE: ${{ steps.releases.outputs.CHANGELOG_MESSAGE }}
