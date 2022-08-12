@@ -9055,12 +9055,7 @@ const getLastReleaseData = async (octokit, owner, repo) => {
   return lastReleaseData;
 };
 
-const createNewRelease = async (
-  octokit,
-  owner,
-  repo,
-  targetCommitSHA
-) => {
+const createNewRelease = async (octokit, owner, repo, targetCommitSHA) => {
   const lastRelease = await getLastReleaseData(octokit, owner, repo);
   const newVersion = getNewVersionNumber(lastRelease.tag_name);
   const { data: releaseData } = await octokit.rest.repos.createRelease({
@@ -9071,7 +9066,11 @@ const createNewRelease = async (
     target_commitish: targetCommitSHA,
     generate_release_notes: true,
   });
-  return { version: releaseData.tag_name, changelog: releaseData.body, url: releaseData.html_url };
+  return {
+    version: releaseData.tag_name,
+    changelog: releaseData.body,
+    url: releaseData.html_url,
+  };
 };
 
 async function run() {
@@ -9092,9 +9091,9 @@ async function run() {
       targetCommitSHA
     );
 
-    core.setOutput('CHANGELOG_MESSAGE', changelog);
-    core.setOutput('VERSION', version);
-    core.setOutput('RELEASE_URL', url);
+    core.setOutput("CHANGELOG_MESSAGE", changelog);
+    core.setOutput("VERSION", version);
+    core.setOutput("RELEASE_URL", url);
   } catch (error) {
     core.setFailed(error.message);
   }

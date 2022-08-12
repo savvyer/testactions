@@ -7119,7 +7119,7 @@ const axios = __nccwpck_require__(2025);
 
 async function run() {
   try {
-    const slackWebhook =  process.env.SLACK_WEBHOOK;
+    const slackWebhook = process.env.SLACK_WEBHOOK;
     const changelogMessage = core.getInput("CHANGELOG_MESSAGE");
     const version = core.getInput("VERSION");
     const releaseUrl = core.getInput("RELEASE_URL");
@@ -7131,36 +7131,34 @@ async function run() {
           text: {
             type: "plain_text",
             emoji: true,
-            text: `New release v${version} :rocket:`
-          }
+            text: `New release v${version} :rocket:`,
+          },
         },
         {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: `@channel <${releaseUrl}>`
-            
-          }
+            text: `@channel <${releaseUrl}>`,
+          },
         },
         {
           type: "header",
           text: {
             type: "plain_text",
-            text: "Changelog"
-          }
+            text: "Changelog",
+          },
         },
         {
           type: "section",
           text: {
             type: "plain_text",
-            text: changelogMessage
-          }
-        }
-      ]
+            text: changelogMessage,
+          },
+        },
+      ],
     };
 
     await axios.post(slackWebhook, payload);
-
   } catch (error) {
     core.setFailed(error.message);
   }
