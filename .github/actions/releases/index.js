@@ -59,7 +59,7 @@ const createNewRelease = async (
   newReleaseDescription
 ) => {
   const newVersion = getNewVersionNumber(lastRelease.tag_name);
-  await octokit.rest.repos.createRelease({
+  const releaseData = await octokit.rest.repos.createRelease({
     owner,
     repo,
     name: `v${newVersion}`,
@@ -67,6 +67,7 @@ const createNewRelease = async (
     body: newReleaseDescription,
     generate_release_notes: true,
   });
+  console.log("!!! releaseData", releaseData);
 };
 
 const getMergedPRs = async (
@@ -155,6 +156,9 @@ async function run() {
     );
 
     core.setOutput('CHANGELOG_MESSAGE', newReleaseDescription);
+
+    const newVersion = getNewVersionNumber(lastRelease.tag_name);
+    core.setOutput('VERSION', newVersion);
   } catch (error) {
     core.setFailed(error.message);
   }

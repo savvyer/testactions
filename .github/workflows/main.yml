@@ -17,6 +17,8 @@ jobs:
     - name: Slack notification
       uses: ./.github/actions/slack
       id: slack
-      with:
+      env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      with:
         CHANGELOG_MESSAGE: ${{ steps.releases.outputs.CHANGELOG_MESSAGE }}
+        VERSION: ${{ steps.releases.outputs.VERSION }}
