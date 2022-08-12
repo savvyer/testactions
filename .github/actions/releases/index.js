@@ -57,6 +57,7 @@ const createNewRelease = async (
   repo,
   targetCommitSHA
 ) => {
+  console.log("!!! targetCommitSHA", targetCommitSHA);
   const lastRelease = await getLastReleaseData(octokit, owner, repo);
   const newVersion = getNewVersionNumber(lastRelease.tag_name);
   const { data: releaseData } = await octokit.rest.repos.createRelease({
