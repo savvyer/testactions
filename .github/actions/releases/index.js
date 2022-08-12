@@ -64,7 +64,7 @@ const createNewRelease = async (
     repo,
     name: `v${newVersion}`,
     tag_name: newVersion,
-    target_commitish: targetCommitSHA,
+    //target_commitish: targetCommitSHA,
     generate_release_notes: true,
   });
   return { version: releaseData.tag_name, changelog: releaseData.body };
