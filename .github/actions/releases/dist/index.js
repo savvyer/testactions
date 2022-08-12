@@ -9061,6 +9061,7 @@ const createNewRelease = async (
   repo,
   targetCommitSHA
 ) => {
+  console.log("!!! targetCommitSHA", targetCommitSHA);
   const lastRelease = await getLastReleaseData(octokit, owner, repo);
   const newVersion = getNewVersionNumber(lastRelease.tag_name);
   const { data: releaseData } = await octokit.rest.repos.createRelease({
@@ -9085,7 +9086,7 @@ async function run() {
     const githubToken = core.getInput("RELEASE_TOKEN");
     const octokit = github.getOctokit(githubToken);
 
-    const { version, changelog } = await createNewRelease(
+    const { version, changelog, url } = await createNewRelease(
       octokit,
       owner,
       repo,
