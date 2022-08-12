@@ -7122,6 +7122,7 @@ async function run() {
     const slackWebhook =  process.env.SLACK_WEBHOOK;
     const changelogMessage = core.getInput("CHANGELOG_MESSAGE");
     const version = core.getInput("VERSION");
+    const releaseUrl = core.getInput("RELEASE_URL");
 
     const payload = {
       blocks: [
@@ -7137,7 +7138,7 @@ async function run() {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: `@channel Full changelog here <https://github.com/adtribute/analytics/releases/tag/${version}>`
+            text: `@channel <${releaseUrl}>`
             
           }
         },

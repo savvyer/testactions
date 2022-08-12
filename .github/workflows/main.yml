@@ -22,3 +22,4 @@ jobs:
       with:
         CHANGELOG_MESSAGE: ${{ steps.releases.outputs.CHANGELOG_MESSAGE }}
         VERSION: ${{ steps.releases.outputs.VERSION }}
+        RELEASE_URL: ${{ steps.releases.outputs.RELEASE_URL }}

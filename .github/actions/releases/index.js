@@ -67,7 +67,7 @@ const createNewRelease = async (
     //target_commitish: targetCommitSHA,
     generate_release_notes: true,
   });
-  return { version: releaseData.tag_name, changelog: releaseData.body };
+  return { version: releaseData.tag_name, changelog: releaseData.body, url: releaseData.html_url };
 };
 
 async function run() {
@@ -90,6 +90,7 @@ async function run() {
 
     core.setOutput('CHANGELOG_MESSAGE', changelog);
     core.setOutput('VERSION', version);
+    core.setOutput('RELEASE_URL', url);
   } catch (error) {
     core.setFailed(error.message);
   }
