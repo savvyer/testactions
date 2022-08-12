@@ -82,7 +82,7 @@ async function run() {
     const githubToken = core.getInput("RELEASE_TOKEN");
     const octokit = github.getOctokit(githubToken);
 
-    const { version, changelog } = await createNewRelease(
+    const { version, changelog, url } = await createNewRelease(
       octokit,
       owner,
       repo,
