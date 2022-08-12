@@ -10,6 +10,9 @@ inputs:
   VERSION:
     description: 'Release version'
     required: true
+  RELEASE_URL:
+    description: 'Github release url'
+    required: true
 runs:
   using: 'node12'
   main: 'dist/index.js'
