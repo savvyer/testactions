@@ -9059,72 +9059,19 @@ const createNewRelease = async (
   octokit,
   owner,
   repo,
-  lastRelease,
-  newReleaseDescription
+  targetCommitSHA
 ) => {
+  const lastRelease = await getLastReleaseData(octokit, owner, repo);
   const newVersion = getNewVersionNumber(lastRelease.tag_name);
-  const releaseData = await octokit.rest.repos.createRelease({
+  const { data: releaseData } = await octokit.rest.repos.createRelease({
     owner,
     repo,
     name: `v${newVersion}`,
     tag_name: newVersion,
-    body: newReleaseDescription,
+    target_commitish: targetCommitSHA,
     generate_release_notes: true,
   });
-  console.log("!!! releaseData", releaseData);
-};
-
-const getMergedPRs = async (
-  octokit,
-  owner,
-  repo,
-  lastRelease,
-  newReleaseSHA
-) => {
-  let mergedPRs = [];
-
-  const finalCommitInNewRelease = await octokit.rest.repos.getCommit({
-    owner,
-    repo,
-    ref: newReleaseSHA,
-  });
-
-  const lastReleaseTime = lastRelease.created_at;
-  const newReleaseTime = finalCommitInNewRelease.data.commit.committer.date;
-
-  const q = `repo:${owner}/${repo} merged:${lastReleaseTime}..${newReleaseTime} base:main`;
-  const prSearchResults = await octokit.rest.search.issuesAndPullRequests({ q });
-
-  mergedPRs = prSearchResults.data.items;
-  return mergedPRs;
-};
-
-const extractShortcutLinks = (prBody) => {
-  const shortcutRegex =
-    /(https:\/\/app.shortcut.com\b\/[-a-zA-Z0-9@:%_\+.~#?&=\/\/]*)/g;
-  const shortcutLinks = prBody.match(shortcutRegex) || [];
-  return shortcutLinks;
-};
-
-const getReleaseSummary = (mergedPRs) => {
-  const header = "# Release Changelog\n";
-  let summaryOfReleasedPRs = "_Unknown_";
-
-  const mergedPRList = mergedPRs.map((pullData) => {
-    let summary = `- ${pullData.title}: ${pullData.html_url}`;
-    const shortcutLinks = extractShortcutLinks(pullData.body);
-    if (shortcutLinks.length) {
-      summary += `\n  - Related shortcut stories:`;
-      shortcutLinks.forEach((link) => {
-        summary += `\n    - ${link}`;
-      });
-    }
-    return summary;
-  });
-
-  summaryOfReleasedPRs = mergedPRList.join("\n\n");
-
-  return header + summaryOfReleasedPRs;
+  return { version: releaseData.tag_name, changelog: releaseData.body };
 };
 
 async function run() {
@@ -9134,35 +9081,19 @@ async function run() {
     const owner = payload.repository.owner.login;
     const repo = payload.repository.name;
 
+    const targetCommitSHA = core.getInput("TARGET_COMMIT_SHA");
     const githubToken = core.getInput("RELEASE_TOKEN");
     const octokit = github.getOctokit(githubToken);
 
-    const lastRelease = await getLastReleaseData(octokit, owner, repo);
-    const newReleaseSHA = core.getInput("TARGET_COMMIT_SHA");
-
-    const releasedPRs = await getMergedPRs(
+    const { version, changelog } = await createNewRelease(
       octokit,
       owner,
       repo,
-      lastRelease,
-      newReleaseSHA
+      targetCommitSHA
     );
 
-    const newReleaseDescription = getReleaseSummary(releasedPRs);
-
-    await createNewRelease(
-      octokit,
-      owner,
-      repo,
-      lastRelease,
-      newReleaseDescription,
-      newReleaseSHA
-    );
-
-    core.setOutput('CHANGELOG_MESSAGE', newReleaseDescription);
-
-    const newVersion = getNewVersionNumber(lastRelease.tag_name);
-    core.setOutput('VERSION', newVersion);
+    core.setOutput('CHANGELOG_MESSAGE', changelog);
+    core.setOutput('VERSION', version);
   } catch (error) {
     core.setFailed(error.message);
   }
