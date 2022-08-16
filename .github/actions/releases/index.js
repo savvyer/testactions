@@ -116,7 +116,8 @@ async function run() {
 
     const mergedPRs = await getMergedPRs(octokit, owner, repo, lastRelease, newRelease);
     const shortcutLinks = getShortcutLinks(mergedPRs);
-
+console.log("!!! mergedPRs", mergedPRs);
+console.log("!!! shortcutLinks", shortcutLinks);
     let changelogMessage = '';
     if (shortcutLinks.length) {
       changelogMessage = '## Released stories\n' + 
