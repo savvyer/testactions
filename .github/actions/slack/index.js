@@ -1,5 +1,6 @@
 const core = require("@actions/core");
 const axios = require("axios");
+const slackifyMarkdown = require('slackify-markdown');
 
 async function run() {
   try {
@@ -36,7 +37,7 @@ async function run() {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: changelogMessage,
+            text: slackifyMarkdown(changelogMessage),
           },
         },
       ],
