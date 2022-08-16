@@ -9066,6 +9066,7 @@ const createNewRelease = async (octokit, owner, repo, targetCommitSHA) => {
     target_commitish: targetCommitSHA,
     generate_release_notes: true,
   });
+  console.log("releaseData", releaseData);
   return {
     version: releaseData.tag_name,
     changelog: releaseData.body,
@@ -9108,7 +9109,7 @@ async function run() {
     const octokit = github.getOctokit(githubToken);
 
     const lastRelease = await getLastReleaseData(octokit, owner, repo);
-    console.log("!!! lastRelease", lastRelease);
+
     const { version, changelog, url } = await createNewRelease(
       octokit,
       owner,
@@ -9117,7 +9118,7 @@ async function run() {
     );
 
     const newRelease = await getLastReleaseData(octokit, owner, repo);
-    console.log("!!! newRelease", newRelease);
+
     const mergedPRs = await getMergedPRs(octokit, owner, repo, lastRelease, newRelease);
     const shortcutLinks = getShortcutLinks(mergedPRs);
 console.log("!!! mergedPRs", mergedPRs);
