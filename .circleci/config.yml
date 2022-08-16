@@ -2,6 +2,12 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+executors:
+  awscli-executor: 
+    resource_class: small
+    docker:
+      - image: circleci/python
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
@@ -40,13 +46,9 @@ workflows:
   Main workflow:
     jobs:
       - say-hello
-        name: Say hello
-        filters:
-            branches:
-              only: main
       - create-github-release:
           requires:
-            - Say hello
+            - say-hello
           filters:
             branches:
               only: main
