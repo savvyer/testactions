@@ -29,10 +29,10 @@ jobs:
         - run:
             name: Create github release
             command: |
-              curl
-              --request POST
-              --url 'https://api.github.com/repos/adtribute/analytics/dispatches'
-              --header 'authorization: Bearer "'"${GITHUB_AUTH_TOKEN}"'"'
+              curl \ 
+              --request POST \ 
+              --url 'https://api.github.com/repos/savvyer/testactions/dispatches' \
+              --header 'authorization: Bearer '"${GITHUB_AUTH_TOKEN}"'' \
               --data '{
                 "event_type": "release",
                 "client_payload": {
