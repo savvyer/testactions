@@ -69,9 +69,32 @@ const createNewRelease = async (octokit, owner, repo, targetCommitSHA) => {
   };
 };
 
+const getMergedPRs = async (
+  octokit,
+  owner,
+  repo,
+  lastRelease,
+  newRelease
+) => {
+  const lastReleaseTime = lastRelease.published_at;
+  const newReleaseTime = newRelease.published_at;
+
+  const q = `repo:${owner}/${repo} merged:${lastReleaseTime}..${newReleaseTime} base:main`;
+  const prSearchResults = await octokit.rest.search.issuesAndPullRequests({ q, per_page: 100 });
+
+  return prSearchResults.data.items;
+};
+
+const getShortcutLinks = (mergedPRs) => {
+  const shortcutRegex =
+    /(https:\/\/app.shortcut.com\b\/[-a-zA-Z0-9@:%_\+.~#?&=\/\/]*)/g;
+
+  const shortcutLinks = mergedPRs.map(prData => prData.body.match(shortcutRegex) || []);
+  return shortcutLinks.flat();
+};
+
 async function run() {
   try {
-    // Get the JSON webhook payload for the event that triggered the workflow
     const { payload } = github.context;
     const owner = payload.repository.owner.login;
     const repo = payload.repository.name;
@@ -80,6 +103,8 @@ async function run() {
     const githubToken = core.getInput("RELEASE_TOKEN");
     const octokit = github.getOctokit(githubToken);
 
+    const lastRelease = await getLastReleaseData(octokit, owner, repo);
+
     const { version, changelog, url } = await createNewRelease(
       octokit,
       owner,
@@ -87,7 +112,19 @@ async function run() {
       targetCommitSHA
     );
 
-    core.setOutput("CHANGELOG_MESSAGE", changelog);
+    const newRelease = await getLastReleaseData(octokit, owner, repo);
+
+    const mergedPRs = await getMergedPRs(octokit, owner, repo, lastRelease, newRelease);
+    const shortcutLinks = getShortcutLinks(mergedPRs);
+
+    const changelogMessage = `
+      ## Released stories
+      ${shortcutLinks.map(link => `* ${link}\n`).join('')}
+      \n
+      ${changelog}
+    `;
+
+    core.setOutput("CHANGELOG_MESSAGE", changelogMessage);
     core.setOutput("VERSION", version);
     core.setOutput("RELEASE_URL", url);
   } catch (error) {
