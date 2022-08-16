@@ -11,8 +11,9 @@ jobs:
     - name: Create a Release
       uses: ./.github/actions/releases
       id: releases
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         TARGET_COMMIT_SHA: ${{ github.event.client_payload.TARGET_COMMIT_SHA }}
     - name: Slack notification
       uses: ./.github/actions/slack

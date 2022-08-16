@@ -105,8 +105,7 @@ async function run() {
     const repo = payload.repository.name;
 
     const targetCommitSHA = core.getInput("TARGET_COMMIT_SHA");
-    const githubToken = core.getInput("RELEASE_TOKEN");
-    const octokit = github.getOctokit(githubToken);
+    const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
 
     const {
       version,
