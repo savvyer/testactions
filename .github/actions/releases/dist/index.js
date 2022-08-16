@@ -9121,12 +9121,12 @@ async function run() {
     const mergedPRs = await getMergedPRs(octokit, owner, repo, lastRelease, newRelease);
     const shortcutLinks = getShortcutLinks(mergedPRs);
 
-    const changelogMessage = `
-      ## Released stories
-      ${shortcutLinks.map(link => `* ${link}\n`).join('')}
-      \n
-      ${changelog}
-    `;
+    let changelogMessage = '';
+    if (shortcutLinks.length) {
+      changelogMessage = '## Released stories\n' + 
+      `${shortcutLinks.map(link => `* ${link}\n`).join('')}`;
+    }
+    changelogMessage += `\n${changelog}`;
 
     core.setOutput("CHANGELOG_MESSAGE", changelogMessage);
     core.setOutput("VERSION", version);
