@@ -9085,7 +9085,7 @@ const getMergedPRs = async (
 
   const q = `repo:${owner}/${repo} merged:${lastReleaseTime}..${newReleaseTime} base:main`;
   const prSearchResults = await octokit.rest.search.issuesAndPullRequests({ q, per_page: 100 });
-
+console.log('prSearchResults', prSearchResults);
   return prSearchResults.data.items;
 };
 
@@ -9108,7 +9108,7 @@ async function run() {
     const octokit = github.getOctokit(githubToken);
 
     const lastRelease = await getLastReleaseData(octokit, owner, repo);
-
+    console.log("!!! lastRelease", lastRelease);
     const { version, changelog, url } = await createNewRelease(
       octokit,
       owner,
@@ -9117,7 +9117,7 @@ async function run() {
     );
 
     const newRelease = await getLastReleaseData(octokit, owner, repo);
-
+    console.log("!!! newRelease", newRelease);
     const mergedPRs = await getMergedPRs(octokit, owner, repo, lastRelease, newRelease);
     const shortcutLinks = getShortcutLinks(mergedPRs);
 console.log("!!! mergedPRs", mergedPRs);
