@@ -110,7 +110,7 @@ const getMergedPRs = async (
   newReleaseSHA
 ) => {
   const lastReleaseTimestamp = await getMergeOrCommitTimestamp(octokit, owner, repo, lastReleaseSHA);
-  const newReleaseTimestamp = await FixgetMergeOrCommitTimestamp(octokit, owner, repo, newReleaseSHA);
+  const newReleaseTimestamp = await getMergeOrCommitTimestamp(octokit, owner, repo, newReleaseSHA);
 
   console.log("lastReleaseTimestamp", lastReleaseTimestamp);
   console.log("newReleaseTimestamp", newReleaseTimestamp);
