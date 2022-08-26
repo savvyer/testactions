@@ -1,26 +1,27 @@
-name: Publish Release
+name: Publish New Release
 on:
-  repository_dispatch
-  
+  repository_dispatch:
+    types: [release]
+
 jobs:
-  build:
+  create_release:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Create a Release
-      uses: ./.github/actions/releases
-      id: releases
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        TARGET_COMMIT_SHA: ${{ github.event.client_payload.TARGET_COMMIT_SHA }}
-    - name: Slack notification
-      uses: ./.github/actions/slack
-      id: slack
-      env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-      with:
-        CHANGELOG_MESSAGE: ${{ steps.releases.outputs.CHANGELOG_MESSAGE }}
-        VERSION: ${{ steps.releases.outputs.VERSION }}
-        RELEASE_URL: ${{ steps.releases.outputs.RELEASE_URL }}
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Create a Release
+        uses: ./.github/actions/releases
+        id: releases
+        with:
+          TARGET_COMMIT_SHA:
+            ${{ github.event.client_payload.TARGET_COMMIT_SHA }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Slack notification
+        uses: ./.github/actions/slack
+        id: slack
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        with:
+          CHANGELOG_MESSAGE: ${{ steps.releases.outputs.CHANGELOG_MESSAGE }}
+          VERSION: ${{ steps.releases.outputs.VERSION }}
+          RELEASE_URL: ${{ steps.releases.outputs.RELEASE_URL }}
