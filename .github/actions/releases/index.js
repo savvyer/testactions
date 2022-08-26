@@ -160,7 +160,10 @@
        newReleaseFinalCommitTime
      );
      const shortcutLinks = getShortcutLinks(mergedPRs);
- 
+ console.log('lastReleaseFinalCommitTime', lastReleaseFinalCommitTime);
+ console.log('newReleaseFinalCommitTime', newReleaseFinalCommitTime);
+ console.log('mergedPRs', mergedPRs);
+ console.log('shortcutLinks', shortcutLinks);
      let changelog = '';
      if (shortcutLinks.length) {
        changelog =
