@@ -81,7 +81,7 @@ const createNewRelease = async (
   };
 };
 
-const getMergeOrCommitTimestamp = async (commitSHA) => {
+const getMergeOrCommitTimestamp = async (octokit, owner, repo, commitSHA) => {
   let timestamp;
   try {
     const prResponse = await octokit.rest.search.issuesAndPullRequests({
@@ -107,8 +107,8 @@ const getMergedPRs = async (
   lastReleaseSHA,
   newReleaseSHA
 ) => {
-  const lastReleaseTimestamp = getMergeOrCommitTimestamp(lastReleaseSHA);
-  const newReleaseTimestamp = getMergeOrCommitTimestamp(newReleaseSHA);
+  const lastReleaseTimestamp = getMergeOrCommitTimestamp(octokit, owner, repo, lastReleaseSHA);
+  const newReleaseTimestamp = getMergeOrCommitTimestamp(octokit, owner, repo, newReleaseSHA);
 
   // github search for ranged values X..Y is inclusive for X and exclusive for Y
   // so we have to increase each timestamp to get correct list of merged PRs for the new release
