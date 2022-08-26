@@ -9772,11 +9772,16 @@ var __webpack_exports__ = {};
    lastReleaseFinalCommitTime,
    newReleaseFinalCommitTime
  ) => {
-   const q = `repo:${owner}/${repo} merged:${lastReleaseFinalCommitTime}..${newReleaseFinalCommitTime} base:main`;
-   const prSearchResults = await octokit.rest.search.issuesAndPullRequests({
-     q,
-     per_page: 100,
-   });
+    // github search for ranged value X..Y is inclusive for X and exclusive for Y
+    // so we have to increase each timestamp to get correct list of merged PRs for the new release
+    const newReleaseStartTime = new Date(new Date(lastReleaseFinalCommitTime).getTime() + 1).toISOString();
+    const newReleaseEndTime = new Date(new Date(newReleaseFinalCommitTime).getTime() + 1).toISOString();
+
+    const q = `repo:${owner}/${repo} merged:${newReleaseStartTime}..${newReleaseEndTime} base:main`;
+    const prSearchResults = await octokit.rest.search.issuesAndPullRequests({
+      q,
+      per_page: 100,
+    });
  
    return prSearchResults.data.items;
  };
