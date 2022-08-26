@@ -9753,6 +9753,7 @@ const getMergeOrCommitTimestamp = async (octokit, owner, repo, commitSHA) => {
     const prResponse = await octokit.rest.search.issuesAndPullRequests({
       q: `${commitSHA} repo:${owner}/${repo} is:merged`,
     });
+    console.log('prResponse', commitSHA, prResponse)
     const prData = prResponse.data.items[0];
     timestamp = prData.pull_request.merged_at;
   } catch(e) {
@@ -9760,7 +9761,7 @@ const getMergeOrCommitTimestamp = async (octokit, owner, repo, commitSHA) => {
     const commitResponse = await octokit.rest.repos.getCommit({
       owner,
       repo,
-      ref: lastReleaseSHA,
+      ref: commitSHA,
     });
     timestamp = commitResponse.data.commit.committer.date;
   }
