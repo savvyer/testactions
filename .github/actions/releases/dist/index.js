@@ -9755,7 +9755,8 @@ const getMergeOrCommitTimestamp = async (octokit, owner, repo, commitSHA) => {
     });
     const prData = prResponse.data.items[0];
     timestamp = prData.pull_request.merged_at;
-  } catch {
+  } catch(e) {
+    console.log('catch', e);
     const commitResponse = await octokit.rest.repos.getCommit({
       owner,
       repo,
@@ -9776,6 +9777,9 @@ const getMergedPRs = async (
   const lastReleaseTimestamp = getMergeOrCommitTimestamp(octokit, owner, repo, lastReleaseSHA);
   const newReleaseTimestamp = getMergeOrCommitTimestamp(octokit, owner, repo, newReleaseSHA);
 
+  console.log("lastReleaseTimestamp", lastReleaseTimestamp);
+  console.log("newReleaseTimestamp", newReleaseTimestamp);
+
   // github search for ranged values X..Y is inclusive for X and exclusive for Y
   // so we have to increase each timestamp to get correct list of merged PRs for the new release
   const searchStartTime = new Date(
@@ -9790,8 +9794,6 @@ const getMergedPRs = async (
     q,
     per_page: 100,
   });
-  console.log("lastReleaseTimestamp", lastReleaseTimestamp);
-  console.log("newReleaseTimestamp", newReleaseTimestamp);
   console.log("q", q);
   return prSearchResults.data.items;
 };
