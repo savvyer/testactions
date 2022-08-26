@@ -1,9 +1,12 @@
 name: "Github Release"
-description: "Publish Github releases from an action"
+description: "Publish github releases from an action"
 
 inputs:
   TARGET_COMMIT_SHA:
     description: 'Target commit SHA for this deploy'
+    required: true
+  GITHUB_TOKEN:
+    description: 'Token automatically provided by Github'
     required: true
 
 runs:
