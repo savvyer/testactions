@@ -116,7 +116,9 @@
       q,
       per_page: 100,
     });
- 
+ console.log('newReleaseStartTime', newReleaseStartTime);
+ console.log('newReleaseEndTime', newReleaseEndTime);
+ console.log('q', q);
    return prSearchResults.data.items;
  };
  
