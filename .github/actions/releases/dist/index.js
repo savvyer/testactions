@@ -9833,13 +9833,14 @@ async function run() {
       newReleaseSHA
     );
 
-    const changelog = mergedPRs
-    .map((pr) => `* ${pr.title} by @${pr.user.login} in ${pr.html_url}`);
+    const changelog = mergedPRs.map(
+      (pr) => `${pr.title} by @${pr.user.login} in ${pr.html_url}`
+    );
 
     const releaseNotes =
       `## What's Changed\n` +
-      changelog.join("\n") +
-      '\n\n' +
+      changelog.map((logEntry) => "* " + logEntry).join("\n") +
+      "\n\n" +
       `**Full Changelog**: https://github.com/adtribute/analytics/compare/${lastRelease.tag_name}...${newVersion}`;
 
     const releaseURL = await createNewRelease(
