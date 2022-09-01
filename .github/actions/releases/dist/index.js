@@ -9839,6 +9839,7 @@ async function run() {
     const releaseNotes =
       `## What's Changed\n` +
       changelog.join("\n") +
+      '\n\n' +
       `**Full Changelog**: https://github.com/adtribute/analytics/compare/${lastRelease.tag_name}...${newVersion}`;
 
     const releaseURL = await createNewRelease(
@@ -9854,7 +9855,7 @@ async function run() {
 
     core.setOutput("SHORTCUT_LINKS", shortcutLinks);
     core.setOutput("CHANGELOG", changelog);
-    core.setOutput("VERSION", version);
+    core.setOutput("VERSION", newVersion);
     core.setOutput("RELEASE_URL", releaseURL);
   } catch (error) {
     core.setFailed(error.message);
