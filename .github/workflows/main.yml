@@ -22,6 +22,6 @@ jobs:
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         with:
-          CHANGELOG_MESSAGE: ${{ steps.releases.outputs.CHANGELOG_MESSAGE }}
+          CHANGELOG: ${{ steps.releases.outputs.CHANGELOG }}
           VERSION: ${{ steps.releases.outputs.VERSION }}
           RELEASE_URL: ${{ steps.releases.outputs.RELEASE_URL }}
