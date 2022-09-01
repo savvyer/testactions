@@ -4,8 +4,11 @@ inputs:
   SLACK_WEBHOOK:
     description: 'Slack webhook'
     required: true
-  CHANGELOG_MESSAGE:
-    description: 'Changelog message'
+  SHORTCUT_LINKS:
+    description: 'List of links to shortcut stories'
+    required: true
+  CHANGELOG:
+    description: 'List of merged PRs'
     required: true
   VERSION:
     description: 'Release version'
