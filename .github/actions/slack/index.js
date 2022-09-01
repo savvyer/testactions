@@ -77,6 +77,8 @@ function createSlackPayload({ version, releaseUrl, shortcutLinks, changelog }) {
     const textSection = createSlackTextSection('None 🤷‍♂️ 🤷‍♀️');
     payload.blocks.push(textSection);
   }
+
+  return payload;
 }
 
 async function run() {
@@ -91,7 +93,8 @@ async function run() {
 
     await axios.post(slackWebhook, payload);
   } catch (error) {
-    core.setFailed(error);
+    core.setFailed(error.message);
+    console.error(error);
   }
 }
 
