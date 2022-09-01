@@ -8890,7 +8890,7 @@ async function run() {
 
     await axios.post(slackWebhook, payload);
   } catch (error) {
-    core.setFailed(error.message);
+    core.setFailed(error);
   }
 }
 
