@@ -74,7 +74,7 @@ const createNewRelease = async (
     tag_name: newVersion,
     target_commitish: targetCommitSHA,
   });
-  console.log("releaseData", releaseData);
+
   return releaseData.html_url;
 };
 
