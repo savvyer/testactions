@@ -22,6 +22,7 @@ jobs:
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         with:
+          SHORTCUT_LINKS: ${{ steps.releases.outputs.SHORTCUT_LINKS }}
           CHANGELOG: ${{ steps.releases.outputs.CHANGELOG }}
           VERSION: ${{ steps.releases.outputs.VERSION }}
           RELEASE_URL: ${{ steps.releases.outputs.RELEASE_URL }}
