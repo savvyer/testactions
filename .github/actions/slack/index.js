@@ -78,6 +78,8 @@ function createSlackPayload({ version, releaseUrl, shortcutLinks, changelog }) {
     payload.blocks.push(textSection);
   }
 
+  payload.blocks.push({ type: 'divider' });
+
   return payload;
 }
 
