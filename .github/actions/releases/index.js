@@ -187,8 +187,8 @@ async function run() {
 
     const shortcutLinks = getShortcutLinks(mergedPRs);
 
-    core.setOutput("SHORTCUT_LINKS", shortcutLinks);
-    core.setOutput("CHANGELOG", changelog);
+    core.setOutput("SHORTCUT_LINKS", JSON.stringify(shortcutLinks));
+    core.setOutput("CHANGELOG", JSON.stringify(changelog));
     core.setOutput("VERSION", newVersion);
     core.setOutput("RELEASE_URL", releaseURL);
   } catch (error) {

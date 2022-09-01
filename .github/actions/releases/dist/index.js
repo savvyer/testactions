@@ -9740,7 +9740,7 @@ const createNewRelease = async (
     tag_name: newVersion,
     target_commitish: targetCommitSHA,
   });
-  console.log("releaseData", releaseData);
+
   return releaseData.html_url;
 };
 
@@ -9853,8 +9853,8 @@ async function run() {
 
     const shortcutLinks = getShortcutLinks(mergedPRs);
 
-    core.setOutput("SHORTCUT_LINKS", shortcutLinks);
-    core.setOutput("CHANGELOG", changelog);
+    core.setOutput("SHORTCUT_LINKS", JSON.stringify(shortcutLinks));
+    core.setOutput("CHANGELOG", JSON.stringify(changelog));
     core.setOutput("VERSION", newVersion);
     core.setOutput("RELEASE_URL", releaseURL);
   } catch (error) {
