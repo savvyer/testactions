@@ -9805,7 +9805,7 @@ const getShortcutLinks = (mergedPRs) => {
     /(https:\/\/app.shortcut.com\b\/[-a-zA-Z0-9@:%_\+.~#?&=\/\/]*)/g;
 
   const shortcutLinks = mergedPRs.map(
-    (prData) => prData.body.match(shortcutRegex) || []
+    (prData) => prData.body?.match(shortcutRegex) || []
   );
   return shortcutLinks.flat();
 };
