@@ -17,5 +17,5 @@ inputs:
     description: 'Github release url'
     required: true
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist/index.js'
