@@ -13,21 +13,9 @@ jobs:
         uses: ./.github/actions/releases
         id: releases
         continue-on-error: true
-        with:
-          TARGET_COMMIT_SHA:
-            ${{ github.event.client_payload.TARGET_COMMIT_SHA }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Wait after failure
-        id: wait
-        if: ${{ failure() }}
-        run: |
-          sleep 300
-          echo "Done waiting for 5 minutes"
-          echo "::set-output name=rerun::true"
-      - name: Retry Create a Release
-        uses: ./.github/actions/releases
-        id: releases
-        if: ${{ steps.wait.outputs.rerun == 'true' }}
+        retry:
+          max-attempts: 3
+          delay: 1m
         with:
           TARGET_COMMIT_SHA:
             ${{ github.event.client_payload.TARGET_COMMIT_SHA }}
