@@ -14,16 +14,14 @@ jobs:
         continue-on-error: true
         run: |
           for i in {1..3}; do
-            if ./.github/actions/releases; then
+            if TARGET_COMMIT_SHA=${{ github.event.client_payload.TARGET_COMMIT_SHA }} \
+                GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} \
+                ./.github/actions/releases; then
               break
             fi
             echo "Create a Release step failed. Retrying in 5 minutes..."
             sleep 300
           done
-        with:
-          TARGET_COMMIT_SHA:
-            ${{ github.event.client_payload.TARGET_COMMIT_SHA }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Slack notification
         uses: ./.github/actions/slack
         id: slack
