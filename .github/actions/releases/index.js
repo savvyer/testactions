@@ -146,6 +146,7 @@ const getShortcutLinks = (mergedPRs) => {
 
 async function run() {
   try {
+    throw new Error('Imitate limits');
     const { payload } = github.context;
     const owner = payload.repository.owner.login;
     const repo = payload.repository.name;
