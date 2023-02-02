@@ -1,0 +1,6 @@
+{
+  "event_type": "release",
+  "client_payload": {
+    "TARGET_COMMIT_SHA": "244882c87450936626ea7f611570eb54741e38bb "
+  }
+}
