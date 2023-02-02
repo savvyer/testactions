@@ -10,25 +10,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Create a Release
+        uses: ./.github/actions/releases
         id: releases
         continue-on-error: true
+        with:
+          TARGET_COMMIT_SHA:
+            ${{ github.event.client_payload.TARGET_COMMIT_SHA }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Wait
+        id: wait
+        if: ${{ failure() }}
         run: |
-          for i in {1..3}; do
-            if TARGET_COMMIT_SHA=${{ github.event.client_payload.TARGET_COMMIT_SHA }} \
-                GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} \
-                ./.github/actions/releases; then
-              break
-            fi
-            echo "Create a Release step failed. Retrying in 5 minutes..."
-            sleep 300
-          done
+          sleep 15
       - name: Slack notification
         uses: ./.github/actions/slack
         id: slack
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        with:
-          SHORTCUT_LINKS: ${{ steps.releases.outputs.SHORTCUT_LINKS }}
-          CHANGELOG: ${{ steps.releases.outputs.CHANGELOG }}
-          VERSION: ${{ steps.releases.outputs.VERSION }}
-          RELEASE_URL: ${{ steps.releases.outputs.RELEASE_URL }}
+

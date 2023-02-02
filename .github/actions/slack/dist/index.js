@@ -7879,10 +7879,10 @@ function createSlackPayload({ version, releaseUrl, shortcutLinks, changelog }) {
 async function run() {
   try {
     const slackWebhook = process.env.SLACK_WEBHOOK;
-    const shortcutLinks = JSON.parse(core.getInput('SHORTCUT_LINKS'));
-    const changelog = JSON.parse(core.getInput('CHANGELOG'));
-    const version = core.getInput('VERSION');
-    const releaseUrl = core.getInput('RELEASE_URL');
+    const shortcutLinks = JSON.parse(process.env.SHORTCUT_LINKS);
+    const changelog = JSON.parse(process.env.CHANGELOG);
+    const version = process.env.VERSION;
+    const releaseUrl = process.env.RELEASE_URL;
 
     const payload = createSlackPayload({ version, releaseUrl, shortcutLinks, changelog });
 

@@ -146,7 +146,6 @@ const getShortcutLinks = (mergedPRs) => {
 
 async function run() {
   try {
-    throw new Error('Imitate limits');
     const { payload } = github.context;
     const owner = payload.repository.owner.login;
     const repo = payload.repository.name;
@@ -189,10 +188,10 @@ async function run() {
 
     const shortcutLinks = getShortcutLinks(mergedPRs);
 
-    core.setOutput("SHORTCUT_LINKS", JSON.stringify(shortcutLinks));
-    core.setOutput("CHANGELOG", JSON.stringify(changelog));
-    core.setOutput("VERSION", newVersion);
-    core.setOutput("RELEASE_URL", releaseURL);
+    core.exportVariable("SHORTCUT_LINKS", JSON.stringify(shortcutLinks));
+    core.exportVariable("CHANGELOG", JSON.stringify(changelog));
+    core.exportVariable("VERSION", newVersion);
+    core.exportVariable("RELEASE_URL", releaseURL);
   } catch (error) {
     core.setFailed(error.message);
   }
